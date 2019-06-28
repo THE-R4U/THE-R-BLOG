@@ -7,24 +7,261 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## GitHub Documents
+이 기사에서는 R에서 기계 학습 및 심층 학습을위한 선형 대수학을 수행하는 방법에 대해 알아 봅니다. 특히, 행렬 곱셈, 선형 방정식 풀기, 항등 행렬, 행렬 역변환, 선형 방정식 시스템 재실행, 찾기 Matrix Norm, Frobenius Norm, 특수 행렬과 벡터, Eigendecomposition, 특이 값 분해, Moore-Penrose Pseudoinverse 및 Matrix Trace를 포함합니다.
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+## 소개
+선형 대수학은 데이터 과학 전반에 널리 사용되는 수학의 한 분야입니다. 그러나 선형 대수학은 이산적인 수학보다는 연속적인 형태이기 때문에 많은 데이터 과학자들은이 수학을 거의 경험하지 못했습니다. 선형 대수학에 대한 올바른 이해는 기계 학습 및 심층 학습 알고리즘을 이해하고 작업하는 데 필수적입니다. 이 기사는 특히이 두 계량 경제학 / 통계학 분야의 선형 대수학을 목표로합니다. R을 사용하여 기계 학습 및 심층 학습을위한 선형 대수학 세계로 뛰어 들어 보겠습니다.
 
-## Including Code
+## 행렬 곱셈
+R에서 행렬 곱셈을 만드는 것으로 시작합시다.
 
-You can include R code in the document as follows:
 
-```{r cars}
-summary(cars)
+
+```{r}
+A <- matrix(data = 1:36, nrow = 6)
+A
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+B <- matrix(data = 1:30, nrow = 6)
+B
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+A %*% B
+```
+
+
+###하다 마드 곱셈
+R에서하다 마드 곱셈을 시도해 봅시다.
+
+```{r}
+A <- matrix(data = 1:36, nrow = 6)
+A
+```
+
+```{r}
+B <- matrix(data = 11:46, nrow = 6)
+```
+
+```{r}
+A * B
+```
+
+
+### 도트 제품
+이제 점 제품을 R로 만들자
+
+```{r}
+X <- matrix(data = 1:10, nrow = 10)
+X
+```
+
+```{r}
+Y <- matrix(data = 11:20, nrow = 10)
+Y
+```
+
+
+
+이제 R에서 Dot Product 함수를 만듭니다.
+
+```{r}
+dotProduct <- function(X, Y) {
+    as.vector(t(X) %*% Y)
+}
+dotProduct(X, Y)
+```
+
+
+### 행렬 곱셈의 속성
+R에서 행렬의 곱의 속성을 봅시다.
+
+1. 매트릭스 속성 : 분배 매트릭스
+
+```{r}
+A <- matrix(data = 1:25, nrow = 5)
+B <- matrix(data = 26:50, nrow = 5)
+C <- matrix(data = 51:75, nrow = 5)
+```
+
+```{r}
+A %*% (B + C)
+```
+
+```{r}
+A %*% B + A %*% C
+```
+
+
+
+2.행렬 속성 : 연관 행렬입니다.
+
+```{r}
+A <- matrix(data = 1:25, nrow = 5)
+B <- matrix(data = 26:50, nrow = 5)
+C <- matrix(data = 51:75, nrow = 5)
+```
+
+```{r}
+A %*% (B + C)
+```
+
+```{r}
+A %*% B + A %*% C
+```
+ 
+
+3. Matrix Property : 그것은 Commutative Matrix가 아닙니다.
+
+```{r}
+A <- matrix(data = 1:25, nrow = 5)
+B <- matrix(data = 26:50, nrow = 5)
+```
+
+```{r}
+A %*% B
+```
+
+```{r}
+B %*% A
+```
+
+
+##행렬 변환
+R에서 Matrix Transpose를 살펴 보겠습니다.
+
+```{r}
+A <- matrix(data = 1:25, nrow = 5, ncol = 5, byrow = TRUE)
+A
+```
+
+```{r}
+t(A)
+```
+
+
+R에서 Matrix Transpose Property를 살펴 보겠습니다.
+
+```{r}
+A <- matrix(data = 1:25, nrow = 5)
+B <- matrix(data = 25:49, nrow = 5)
+```
+
+```{r}
+t(A %*% B)
+```
+
+```{r}
+t(B) %*% t(A)
+```
+
+
+
+##선형 방정식 시스템 풀기
+이제 R에서 선형 방정식 시스템을 풀어 보겠습니다.
+
+```{r}
+Ax = B
+```
+
+```{r}
+A <- matrix(data = c(1, 3, 2, 4, 2, 4, 3, 5, 1, 6, 7, 2, 1, 5, 6, 7), nrow = 4, byrow = TRUE)
+A
+```
+
+```{r}
+B <- matrix(data = c(1, 2, 3, 4), nrow = 4)
+B
+```
+
+```{r}
+solve(a = A, b = B)
+```
+
+
+
+## 단위 행렬
+이제 R에서 Identity Matrix를 해결해 보겠습니다.
+
+```{r}
+I <- diag(x = 1, nrow = 5, ncol = 5)
+I
+```
+
+```{r}
+A <- matrix(data = 1:25, nrow = 5)
+```
+
+```{r}
+A %*% I
+```
+
+```{r}
+I %*% A
+```
+
+
+
+##행렬 역행렬
+이제 R에서 행렬 역변환을 해봅시다.
+
+```{r}
+A <- matrix(data = c(1, 2, 3, 1, 2, 3, 4, 5, 6, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 3), nrow = 5)
+A
+```
+
+```{r}
+library(MASS)
+ginv(A)
+```
+
+```{r}
+ginv(A) %*% A
+```
+
+```{r}
+A %*% ginv(A)
+```
+
+
+
+##재검색 된 선형 방정식 시스템 풀기
+R에서 재검색 된 선형 방정식의 해법을 살펴 보자.
+
+```{r}
+A <- matrix(data = c(1, 3, 2, 4, 2, 4, 3, 5, 1, 6, 7, 2, 1, 5, 6, 7), nrow = 4, byrow = TRUE)
+A
+```
+
+```{r}
+B <- matrix(data = c(1, 2, 3, 4), nrow = 4)
+B
+```
+
+```{r}
+library(MASS)
+X <- ginv(A) %*% B
+X
+```
+
+
+
+
+##결정자
+R에서 결정자 행렬을 찾자.
+
+```{r}
+A <- matrix(data = c(1, 3, 2, 4, 2, 4, 3, 5, 1, 6, 7, 2, 1, 5, 6, 7), nrow = 4, byrow = TRUE)
+A
+```
+
+```{r}
+det(A)
+```
+
+
+
+
