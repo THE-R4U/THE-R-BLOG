@@ -1,6 +1,12 @@
 ---
 title: "기계 학습을위한 선형 대수와 R의 딥러닝"
-output: github_document
+author: THE-R
+date: June 29, 2019
+output: 
+  github_document:
+    toc: true
+    toc_depth: 2
+
 ---
 
 ```{r setup, include=FALSE}
