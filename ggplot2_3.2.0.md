@@ -3,7 +3,7 @@ ggplot2 3.2.0 릴리즈
 THE-R
 June 29, 2019
 
-# test
+# 테스트 입니다
 
 얼마전 CRAN에 ggplot2 3.2.0 릴리즈 되었습니다 . ggplot2는 The Grammar of Graphics에
 기반하여 그래픽을 선언적으로 생성하는 시스템입니다. 데이터를 제공하고 ggplot2 미학요소에 변수를 매핑하는 방법,
